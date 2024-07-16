@@ -39,42 +39,74 @@ class PostController extends Controller
         return view('posts.create');
     }
 
+    public function processInputTags(string $tagsInput): array
+    {
+        // Trim the tags input and explode it by comma
+        return array_map('trim', explode(',', $tagsInput));
+    }
+
     public function store(Request $request)
     {   
+
+        $inputTags = $request->tags;
+
+        // Check if the tags input is empty, assign a null value to the tags
+        $tags = empty($inputTags) ? null : self::processInputTags($inputTags);
+
         // Validate the request
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'status' => 'required|string|in:active,inactive',
-            'tags' => 'nullable|array',
         ]);
 
-        // Create a new post
-        Post::create($request->all());
+        // Create a new post instance
+        $newPost = new Post();
+        $newPost->title = $request->title;
+        $newPost->content = $request->content;
+        $newPost->status = $request->status;
+        $newPost->tags = $tags;
+
+        // Save the post
+        $newPost->save();
 
         // Redirect to the posts index
         return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
 
-    public function edit(string $id): View
+    public function edit(string $id)
     {   
         // Find the post by the ID with the getSingle method
         $post = self::getSingle($id);
 
+        // Cast the tags array to a string with conditions if the tags are empty, return an empty string
+        $post->tags = empty($post->tags) ? '' : implode(', ', $post->tags);
+
         return view('posts.edit', compact('post'));
     }
 
-    public function update(Request $request, Post $post)
-    {
+    public function update(Request $request, string $id)
+    {   
+        // Find the post by the ID with the getSingle method
+        $post = self::getSingle($id);
+        // Process the tags input
+        $inputTags = $request->tags;
+        $tags = empty($inputTags) ? null : self::processInputTags($inputTags);
+
+        // Validate the request
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'status' => 'required|string|in:active,inactive',
-            'tags' => 'nullable|array',
         ]);
 
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->status = $request->status;
+        $post->tags = $tags;
+
         // Update the post
-        $post->update($request->all());
+        $post->update();
 
         return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Diupdate!']);
     }
