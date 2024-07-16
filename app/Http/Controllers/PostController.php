@@ -53,7 +53,7 @@ class PostController extends Controller
         Post::create($request->all());
 
         // Redirect to the posts index
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
 
     public function edit(string $id): View
@@ -76,7 +76,7 @@ class PostController extends Controller
         // Update the post
         $post->update($request->all());
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Diupdate!']);
     }
 
     public function destroy(string $id)
@@ -87,6 +87,6 @@ class PostController extends Controller
         // Delete the post
         $post->delete();
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 }
