@@ -20,8 +20,11 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function show(Post $post): View
+    public function show(string $id): View
     {
+        // Find the post by the ID
+        $post = Post::findOrFail($id);
+
         return view('posts.show', compact('post'));
     }
 
