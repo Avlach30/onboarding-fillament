@@ -20,10 +20,16 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function show(string $id): View
+    public function getSingle(string $id): Post
     {
         // Find the post by the ID
-        $post = Post::findOrFail($id);
+        return Post::findOrFail($id);
+    }
+
+    public function show(string $id): View
+    {
+        // Find the post by the ID with the getSingle method
+        $post = self::getSingle($id);
 
         return view('posts.show', compact('post'));
     }
@@ -50,8 +56,11 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function edit(Post $post)
+    public function edit(string $id): View
     {   
+        // Find the post by the ID with the getSingle method
+        $post = self::getSingle($id);
+
         return view('posts.edit', compact('post'));
     }
 
