@@ -48,6 +48,18 @@ use App\Enums\Status;
                                 @enderror
                             </div>
 
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold">TAGS</label>
+                                <input type="text" class="form-control" name="tags" value="{{ old('tags', $post->tags) }}" placeholder="Masukkan Tag Postingan, pisahkan dengan koma (,)">
+                            
+                                <!-- error message untuk tags -->
+                                @error('tags')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
