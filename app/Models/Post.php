@@ -13,8 +13,8 @@ class Post extends Model
 
     // Mapping columns to their respective data types
     protected $casts = [
-        'tags' => 'array',
         'id' => 'string', // This will cast the id to a string when retrieved
+        'tags' => 'array', // This will cast the tags to an array when retrieved
     ];
 
     protected $fillable = [
