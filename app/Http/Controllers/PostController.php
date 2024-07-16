@@ -79,8 +79,11 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function destroy(Post $post)
+    public function destroy(string $id)
     {   
+        // Find the post by the ID with the getSingle method
+        $post = self::getSingle($id);
+
         // Delete the post
         $post->delete();
 
