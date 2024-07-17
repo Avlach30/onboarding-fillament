@@ -47,16 +47,19 @@ class PostResource extends Resource
         return $infolist
             ->schema([
                 Split::make([
-                    Section::make([
-                        TextEntry::make('title')->weight(FontWeight::Bold),
-                        TextEntry::make('content'),
-                        TextEntry::make('status'),
-                        TextEntry::make('tags'),
-                    ]),
-                    Section::make([
-                        TextEntry::make('created_at'),
-                        TextEntry::make('updated_at'),
-                    ])->grow(false),
+                    Section::make('Informasi postingan')
+                        ->schema([
+                            TextEntry::make('title')->weight(FontWeight::Bold),
+                            TextEntry::make('content'),
+                            TextEntry::make('status'),
+                            TextEntry::make('tags'),
+                        ])->grow(false),
+                    Section::make('Tanggal')
+                        ->description('Tanggal dibuat dan diperbaruinya catatan ini')
+                        ->schema([
+                            TextEntry::make('created_at'),
+                            TextEntry::make('updated_at'),
+                        ])->grow(false),
                 ]),
             ]);
     }
