@@ -10,7 +10,10 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Filters;
@@ -43,12 +46,18 @@ class PostResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('title'),
-                TextEntry::make('content'),
-                TextEntry::make('status'),
-                TextEntry::make('tags'),
-                TextEntry::make('created_at'),
-                TextEntry::make('updated_at'),
+                Split::make([
+                    Section::make([
+                        TextEntry::make('title')->weight(FontWeight::Bold),
+                        TextEntry::make('content'),
+                        TextEntry::make('status'),
+                        TextEntry::make('tags'),
+                    ]),
+                    Section::make([
+                        TextEntry::make('created_at'),
+                        TextEntry::make('updated_at'),
+                    ])->grow(false),
+                ]),
             ]);
     }
 
