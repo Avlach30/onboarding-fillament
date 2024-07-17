@@ -8,6 +8,8 @@ use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -34,6 +36,19 @@ class PostResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options(Status::class),
                 Forms\Components\TextInput::make('tags'),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('title'),
+                TextEntry::make('content'),
+                TextEntry::make('status'),
+                TextEntry::make('tags'),
+                TextEntry::make('created_at'),
+                TextEntry::make('updated_at'),
             ]);
     }
 
