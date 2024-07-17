@@ -59,7 +59,9 @@ class PostResource extends Resource
                         ->schema([
                             TextEntry::make('created_at'),
                             TextEntry::make('updated_at'),
-                        ])->grow(false),
+                        ])
+                        ->grow(false)
+                        ->collapsible(),
                 ]),
             ]);
     }
