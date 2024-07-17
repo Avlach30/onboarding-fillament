@@ -44,6 +44,9 @@ class PostResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        // Get tags from the record
+        $tags = $infolist->record->tags;
+
         return $infolist
             ->schema([
                 Split::make([
@@ -52,7 +55,11 @@ class PostResource extends Resource
                             TextEntry::make('title')->weight(FontWeight::Bold),
                             TextEntry::make('content'),
                             TextEntry::make('status'),
-                            TextEntry::make('tags'),
+                            // Display the tags as a custom component
+                            TextEntry::make('tags')->view('components.arr-to-str', [
+                                'items' => $tags,
+                                'label' => 'Tags',
+                            ]),
                         ])->grow(false),
                     Section::make('Tanggal')
                         ->description('Tanggal dibuat dan diperbaruinya catatan ini')
