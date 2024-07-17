@@ -10,6 +10,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Navigation\MenuItem;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -17,6 +18,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+use App\Filament\Pages\App\Profile; // Import the Profile page
 
 class RootPanelProvider extends PanelProvider
 {
@@ -53,6 +56,14 @@ class RootPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->userMenuItems([ // Add a new user menu item
+                'profile' => MenuItem::make()
+                    ->label('Profile') // The label of the menu item
+                    ->icon('heroicon-o-user')
+                    ->url(static function (): string { // Use a closure to generate the URL
+                        return route(Profile::getRouteName()); // Use the route name of the Profile page
+                    }),
             ]);
     }
 }
