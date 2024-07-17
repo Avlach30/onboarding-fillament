@@ -13,7 +13,7 @@ class Profile extends Page
     protected static bool $shouldRegisterNavigation = false; // This will hide the page from the navigation
 
     // The title of the page
-    protected static ?string $title = 'Profile Page';
+    protected static ?string $title = 'Update Profile';
 
     // Get the data for the view from the logged in user
     protected function getViewData(): array
