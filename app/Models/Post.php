@@ -37,4 +37,18 @@ class Post extends Model
             $post->id = STR::uuid();
         });
     }
+
+    public function countData(): int {
+        return $this->count();
+    }
+
+    public function countActives(): int
+    {
+        return $this->where('status', Status::ACTIVE)->count();
+    }
+
+    public function countInactives(): int
+    {
+        return $this->where('status', Status::INACTIVE)->count();
+    }
 }
