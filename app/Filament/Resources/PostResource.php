@@ -12,6 +12,8 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
+use Filament\Infolists\Components\Tabs;
+use Filament\Infolists\Components\Tabs\Tab;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -49,27 +51,40 @@ class PostResource extends Resource
 
         return $infolist
             ->schema([
-                Split::make([
-                    Section::make('Informasi postingan')
-                        ->schema([
-                            TextEntry::make('title')->weight(FontWeight::Bold),
-                            TextEntry::make('content'),
-                            TextEntry::make('status'),
-                            // Display the tags as a custom component
-                            TextEntry::make('tags')->view('components.arr-to-str', [
-                                'items' => $tags,
-                                'label' => 'Tags',
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tab::make('Informasi Postingan')
+                            ->icon('heroicon-o-pencil-square')
+                            ->schema([
+                                Split::make([
+                                    Section::make()
+                                        ->schema([
+                                            TextEntry::make('title')->weight(FontWeight::Bold),
+                                            TextEntry::make('content'),
+                                            TextEntry::make('status'),
+                                            // Display the tags as a custom component
+                                            TextEntry::make('tags')->view('components.arr-to-str', [
+                                                'items' => $tags,
+                                                'label' => 'Tags',
+                                            ]),
+                                        ])->grow(false),
+                                    Section::make('Tanggal')
+                                        ->description('Tanggal dibuat dan diperbaruinya catatan ini')
+                                        ->schema([
+                                            TextEntry::make('created_at'),
+                                            TextEntry::make('updated_at'),
+                                        ])
+                                        ->grow(false)
+                                        ->collapsible(),
+                                ]),
                             ]),
-                        ])->grow(false),
-                    Section::make('Tanggal')
-                        ->description('Tanggal dibuat dan diperbaruinya catatan ini')
-                        ->schema([
-                            TextEntry::make('created_at'),
-                            TextEntry::make('updated_at'),
-                        ])
-                        ->grow(false)
-                        ->collapsible(),
-                ]),
+                        Tab::make('Informasi Kreator')
+                            ->icon('heroicon-o-user')
+                            ->schema([
+                                TextEntry::make('creator_name')->label('Nama'),
+                                TextEntry::make('creator_email')->label('Email'),
+                            ]),
+                    ]),
             ]);
     }
 
