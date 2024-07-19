@@ -50,9 +50,9 @@ class User extends Authenticatable
         ];
     }
 
-    protected function role()
-    {
-        return $this->belongsTo(Role::class);
+    // Get the role details
+    public function getRole(): Role {
+        return $this->belongsTo(Role::class, 'role_id', 'id')->first();
     }
 
     public function countData(): int {
