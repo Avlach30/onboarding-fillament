@@ -6,6 +6,12 @@ use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
+use Filament\Infolists\Components\Tabs;
+use Filament\Infolists\Components\Tabs\Tab;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -51,11 +57,32 @@ class RoleResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tab::make('Role Information')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                TextEntry::make('name'),
+                            ]),
+                        Tab::make('Permissions')
+                            ->icon('heroicon-o-shield-check')
+                            ->schema([
+                                TextEntry::make('permissions'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -71,6 +98,7 @@ class RoleResource extends Resource
         return [
             'index' => Pages\ListRoles::route('/'),
             'create' => Pages\CreateRole::route('/create'),
+            'view' => Pages\ViewRole::route('/{record}'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
     }
