@@ -31,12 +31,20 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->revealable()
+                    ->visibleOn('create')
                     ->maxLength(255),
+                Forms\Components\Select::make('role')
+                    ->options(
+                        \Spatie\Permission\Models\Role::all()
+                            ->mapWithKeys(fn ($role) => [$role->id => $role->name])
+                            ->toArray()
+                    )
+                    ->required(),
             ]);
     }
 
