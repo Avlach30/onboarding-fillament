@@ -9,4 +9,17 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {   
+        // Add the role_id to the data array
+        return array_merge($data, [
+            'role_id' => $data['role'],
+        ]);
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return UserResource::getUrl('index');
+    }
 }
