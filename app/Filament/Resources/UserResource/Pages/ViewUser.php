@@ -17,5 +17,16 @@ class ViewUser extends ViewRecord
 
         // Get the role name from the role_id
         $this->record->role = $this->record->getRole()->name;
+
+        // Get the posts from the user
+        $posts = $this->record->getPosts()->toArray();
+
+        // Map the posts to get the title and status
+        $this->record->posts = array_map(function($post) {
+            return [
+                'title' => $post['title'],
+                'status' => $post['status'],
+            ];
+        }, $posts);
     }
 }
