@@ -21,8 +21,13 @@ class EditPost extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         // Split the tags string into an array if it exists, otherwise return a null value
-        $data['tags'] = $data['tags'] ? explode(',', $data['tags']) : null;
+        $data['tags'] = $data['tags'] ?? null;
 
         return $data;
+    }
+
+    protected function getRedirectUrl(): ?string
+    {
+        return PostResource::getUrl('index');
     }
 }
