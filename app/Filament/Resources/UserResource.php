@@ -7,6 +7,10 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Tabs;
+use Filament\Infolists\Components\Tabs\Tab;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -54,9 +58,25 @@ class UserResource extends Resource
     {
         return $infolist->
             schema([
-                TextEntry::make('name'),
-                TextEntry::make('email'),
-                TextEntry::make('role'),
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tab::make('User Information')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                TextEntry::make('name'),
+                                TextEntry::make('email'),
+                                TextEntry::make('role'),
+                            ]),
+                        Tab::make('Posts')
+                            ->icon('heroicon-o-square-3-stack-3d')
+                            ->schema([
+                                RepeatableEntry::make('posts')
+                                    ->schema([
+                                        TextEntry::make('title'),
+                                        TextEntry::make('status'),
+                                    ]),
+                            ]),
+                    ]),
             ]);
     }
 
