@@ -30,7 +30,7 @@ class RoleResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('permissions')
