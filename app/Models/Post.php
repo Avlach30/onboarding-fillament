@@ -22,6 +22,7 @@ class Post extends Model
         'content',
         'status',
         'tags',
+        'creator_id',
     ];
 
     protected $attributes = [
@@ -50,5 +51,11 @@ class Post extends Model
     public function countInactives(): int
     {
         return $this->where('status', Status::INACTIVE)->count();
+    }
+
+    public function getCreator(): User
+    {   
+        // Get the creator details if the creator_id exists
+        return $this->belongsTo(User::class, 'creator_id', 'id')->first();
     }
 }
