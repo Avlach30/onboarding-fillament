@@ -113,7 +113,7 @@ class UserResource extends Resource
                             // Only allow users with the DELETE_USER permission to delete users
                             $guard = new Guard();
 
-                            return $guard->permission(Permission::DELETE_USER);
+                            $guard->permission(Permission::DELETE_USER);
                         }
                     ),
                 ]),
