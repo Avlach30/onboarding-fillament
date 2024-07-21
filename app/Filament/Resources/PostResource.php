@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Permission;
 use App\Enums\Status;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
+use App\Utils\Guard;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
@@ -113,11 +115,25 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->before(
+                    function () {
+                        // Only allow users with the DELETE_POST permission to delete posts
+                        $guard = new Guard();
+
+                        $guard->permission(Permission::DELETE_POST);
+                    }
+                ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->before(
+                        function () {
+                            // Only allow users with the DELETE_POST permission to delete posts
+                            $guard = new Guard();
+
+                            $guard->permission(Permission::DELETE_POST);
+                        }
+                    ),
                 ]),
             ]);
     }
