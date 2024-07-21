@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Permission;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Utils\Guard;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
@@ -106,7 +108,14 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->before(
+                        function () {
+                            // Only allow users with the DELETE_USER permission to delete users
+                            $guard = new Guard();
+
+                            return $guard->permission(Permission::DELETE_USER);
+                        }
+                    ),
                 ]),
             ]);
     }
