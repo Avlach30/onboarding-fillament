@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Permission;
 use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
+use App\Utils\Guard;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Section;
@@ -58,12 +60,26 @@ class RoleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->before(
+                    function () {
+                        // Only allow users with the DELETE_USER permission to delete users
+                        $guard = new Guard();
+
+                        $guard->permission(Permission::DELETE_ROLE);
+                    }
+                ),
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->before(
+                        function () {
+                            // Only allow users with the DELETE_USER permission to delete users
+                            $guard = new Guard();
+
+                            $guard->permission(Permission::DELETE_ROLE);
+                        }
+                    ),
                 ]),
             ]);
     }
