@@ -7,6 +7,7 @@ use App\Filament\Resources\PostResource;
 use App\Utils\Guard;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditPost extends EditRecord
 {
@@ -17,7 +18,11 @@ class EditPost extends EditRecord
         return [
             Actions\DeleteAction::make()->before(
                 function() {
+                    // Check if the logged in user has the permission to delete a post
                     $this->guard()->permission(Permission::DELETE_POST);
+
+                    // Check if the logged in user is the creator of the post
+                    $this->guard()->checkCreator($this->record->creator_id);
                 }
             ),
         ];
@@ -40,6 +45,14 @@ class EditPost extends EditRecord
         $data['tags'] = $data['tags'] ?? null;
 
         return $data;
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        // Check if the logged in user is the creator of the post
+        $this->guard()->checkCreator($record->creator_id);
+
+        return parent::handleRecordUpdate($record, $data);
     }
 
     protected function getRedirectUrl(): ?string

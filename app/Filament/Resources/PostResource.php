@@ -23,6 +23,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
 
 class PostResource extends Resource
 {
@@ -115,23 +116,31 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->before(
-                    function () {
-                        // Only allow users with the DELETE_POST permission to delete posts
-                        $guard = new Guard();
+                Tables\Actions\DeleteAction::make()
+                    ->before(
+                        function ($record) {
+                            $guard = new Guard();
 
-                        $guard->permission(Permission::DELETE_POST);
-                    }
-                ),
+                            // Only allow users with the DELETE_POST permission to delete posts
+                            $guard->permission(Permission::DELETE_POST);
+
+                            // Check if the logged in user is the creator of the post
+                            $guard->checkCreator($record->creator_id);
+                        }
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->before(
-                        function () {
-                            // Only allow users with the DELETE_POST permission to delete posts
+                        function ($records) {
                             $guard = new Guard();
-
+                            // Only allow users with the DELETE_POST permission to delete posts
                             $guard->permission(Permission::DELETE_POST);
+
+                            // Check if the logged in user is the creator of the selected posts
+                            foreach ($records as $record) {
+                                $guard->checkCreator($record->creator_id);
+                            }
                         }
                     ),
                 ]),
