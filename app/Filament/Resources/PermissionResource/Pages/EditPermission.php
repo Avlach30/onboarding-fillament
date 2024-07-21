@@ -23,9 +23,7 @@ class EditPermission extends EditRecord
             Actions\DeleteAction::make()->before(
                 function () {
                     // Only allow users with the DELETE_PERMISSION permission to delete permissions
-                    $guard = new Guard();
-
-                    $guard->permission(Permission::DELETE_PERMISSION);
+                    $this->guard()->permission(Permission::DELETE_PERMISSION);
                 }
             ),
         ];

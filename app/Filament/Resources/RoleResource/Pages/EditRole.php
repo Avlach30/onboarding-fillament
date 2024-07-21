@@ -17,7 +17,11 @@ class EditRole extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->before(
+                function() {
+                    $this->guard()->permission(Permission::DELETE_ROLE);
+                }
+            ),
         ];
     }
 
