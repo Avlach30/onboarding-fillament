@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\RoleResource\Pages;
 
+use App\Enums\Permission;
 use App\Filament\Resources\RoleResource;
+use App\Utils\Guard;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -17,6 +19,18 @@ class EditRole extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    // Define the instance of the Guard class
+    protected function guard()
+    {
+        return new Guard();
+    }
+
+    public function mountCanAuthorizeAccess(): void
+    {   
+        // Check the permission before mounting
+        $this->guard()->permission(Permission::EDIT_ROLE);
     }
 
     // Mutate the form data before filling the form
