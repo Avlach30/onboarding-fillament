@@ -33,6 +33,7 @@ class RootPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->brandName('Onboarding Filament')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -64,6 +65,8 @@ class RootPanelProvider extends PanelProvider
                     ->url(static function (): string { // Use a closure to generate the URL
                         return route(Profile::getRouteName()); // Use the route name of the Profile page
                     }),
-            ]);
+            ])
+            ->darkMode(false)
+            ->viteTheme('resources/css/filament/root/theme.css');
     }
 }
