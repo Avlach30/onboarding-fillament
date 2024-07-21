@@ -24,12 +24,11 @@ class CreateRole extends CreateRecord
         return new Guard();
     }
 
-    public function mount(): void
+    public function mountCanAuthorizeAccess(): void
     {
         // Check the permission before mounting
         $this->guard()->permission(EnumsPermission::ADD_NEW_ROLE);
     }
-
 
 
     protected function mutateFormDataBeforeCreate(array $data): array
