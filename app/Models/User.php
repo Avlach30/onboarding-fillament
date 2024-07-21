@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -61,5 +63,24 @@ class User extends Authenticatable
 
     public function countData(): int {
         return $this->count();
+    }
+
+    public function getPermissionsById(int $id): array {
+        // Get user by ID
+        $user = $this->where('id', $id)->first();
+
+        // Get the role of the user
+        $role = $user->getRole();
+
+        // Get the permissions of the role
+        return $role->permissions->pluck('name')->toArray();
+    }
+
+    public function isIdHasPermission(int $id, Permission $permission): bool {
+        // Get the permissions of the user
+        $permissions = $this->getPermissionsById($id);
+
+        // Check if the permission exists in the permissions array
+        return in_array($permission->value, $permissions);
     }
 }
