@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use App\Enums\Permission;
 use App\Filament\Resources\UserResource;
+use App\Models\User;
+use App\Utils\Guard;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -10,8 +13,17 @@ class ViewUser extends ViewRecord
 {
     protected static string $resource = UserResource::class;
 
+    // Define the instance of the Guard class
+    protected function guard()
+    {
+        return new Guard();
+    }
+
     public function mount(int|string $record): void
     {   
+        // Check the permission before mounting
+        $this->guard()->permission(Permission::READ_USER);
+
         // Resolve the record
         $this->record = $this->resolveRecord($record);
 
