@@ -41,13 +41,15 @@ class CreateRole extends CreateRecord
         ];
     }
 
-    protected function afterCreate(): void
-    {   
-        // Get the created role
-        $role = Role::latest()->first();
+    protected function handleRecordCreation(array $data): Model|Role
+    {
+        // Create the role
+        $role = Role::create($data);
 
-        // Attach the selected permissions to the created role
+        // Assign the permissions to the role
         $role->permissions()->attach(self::$permissionIds);
+
+        return $role;
     }
 
     protected function getRedirectUrl(): string

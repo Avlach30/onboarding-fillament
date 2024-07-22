@@ -7,6 +7,8 @@ use App\Filament\Resources\RoleResource;
 use App\Utils\Guard;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role;
 
 class EditRole extends EditRecord
 {
@@ -58,15 +60,26 @@ class EditRole extends EditRecord
         ];
     }
 
-    protected function afterSave(): void
+    protected function handleRecordUpdate(Model|Role $record, array $data): Model
     {
-        $role = $this->record;
-        
+        // Update the role
+        $record->update($data);
+
         // Delete the old permissions
-        $role->permissions()->sync(self::$oldPermissionIds);
+        $record->permissions()->sync(self::$oldPermissionIds);
 
         // Attach the new permissions
-        $role->permissions()->attach(self::$permissionIds);
+        $record->permissions()->attach(self::$permissionIds);
+
+        // Get new permission names
+        $newPermissions = $record->permissions->pluck('name')->toArray();
+
+        // Sync the new permissions to entire users with this role
+        $record->users->each(function($user) use ($newPermissions) {
+            $user->syncPermissions($newPermissions);
+        });
+
+        return $record;
     }
 
     protected function getRedirectUrl(): ?string
