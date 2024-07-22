@@ -76,8 +76,10 @@ class PostResource extends Resource
                                     Section::make('Tanggal')
                                         ->description('Tanggal dibuat dan diperbaruinya catatan ini')
                                         ->schema([
-                                            TextEntry::make('created_at'),
-                                            TextEntry::make('updated_at'),
+                                            TextEntry::make('translated_created_at')
+                                                ->label('Dibuat pada'),
+                                            TextEntry::make('translated_updated_at')
+                                                ->label('Diperbarui pada'),
                                         ])
                                         ->grow(false)
                                         ->collapsible(),
