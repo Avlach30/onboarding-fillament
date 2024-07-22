@@ -42,7 +42,8 @@ class PostResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('status')
-                    ->options(Status::class),
+                    ->options(Status::class)
+                    ->required(),
                 Forms\Components\TextInput::make('tags'),
             ]);
     }
@@ -115,8 +116,24 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(
+                        function ($record) {
+                            $guard = new Guard();
+
+                            // Only creators of the post can edit the post
+                            return $guard->isCreator($record->creator_id);
+                        }
+                ),
                 Tables\Actions\DeleteAction::make()
+                    ->visible(
+                        function ($record) {
+                            $guard = new Guard();
+
+                            // Only creators of the post can delete the post
+                            return $guard->isCreator($record->creator_id);
+                        }
+                    )
                     ->before(
                         function ($record) {
                             $guard = new Guard();
