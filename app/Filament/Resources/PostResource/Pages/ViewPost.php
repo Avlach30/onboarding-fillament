@@ -13,15 +13,8 @@ class ViewPost extends ViewRecord
 {
     protected static string $resource = PostResource::class;
 
-    protected function guard()
-    {
-        return new Guard();
-    }
-
     public function mount(int|string $record): void
     {
-        $this->guard()->permission(Permission::READ_POST);
-
         $this->record = $this->resolveRecord($record);
 
         // Define translated data of the created_at and updated_at date to Indonesian

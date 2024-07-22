@@ -141,9 +141,6 @@ class PostResource extends Resource
                         function ($record) {
                             $guard = new Guard();
 
-                            // Only allow users with the DELETE_POST permission to delete posts
-                            $guard->permission(Permission::DELETE_POST);
-
                             // Check if the logged in user is the creator of the post
                             $guard->checkCreator($record->creator_id);
                         }
@@ -154,8 +151,6 @@ class PostResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()->before(
                         function ($records) {
                             $guard = new Guard();
-                            // Only allow users with the DELETE_POST permission to delete posts
-                            $guard->permission(Permission::DELETE_POST);
 
                             // Check if the logged in user is the creator of the selected posts
                             foreach ($records as $record) {

@@ -13,14 +13,16 @@ class EditPost extends EditRecord
 {
     protected static string $resource = PostResource::class;
 
+    protected function guard()
+    {
+        return new Guard();
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()->before(
                 function() {
-                    // Check if the logged in user has the permission to delete a post
-                    $this->guard()->permission(Permission::DELETE_POST);
-
                     // Check if the logged in user is the creator of the post
                     $this->guard()->checkCreator($this->record->creator_id);
                 }
@@ -28,16 +30,6 @@ class EditPost extends EditRecord
         ];
     }
 
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::EDIT_POST);
-    }
     // Function for mutating the form data before saving it
     protected function mutateFormDataBeforeSave(array $data): array
     {

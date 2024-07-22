@@ -17,11 +17,6 @@ class ListPosts extends ListRecords
         return new Guard();
     }
 
-    public function mountCanAuthorizeAccess(): void
-    {
-        $this->guard()->permission(Permission::READ_POST);
-    }
-
     protected function getHeaderActions(): array
     {
         return [

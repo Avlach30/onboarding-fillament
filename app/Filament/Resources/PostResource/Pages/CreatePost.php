@@ -19,17 +19,6 @@ class CreatePost extends CreateRecord
         return PostResource::getUrl('index');
     }
 
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::ADD_NEW_POST);
-    }
-
     // Function for mutating the form data before saving it
     protected function mutateFormDataBeforeCreate(array $data): array
     {
