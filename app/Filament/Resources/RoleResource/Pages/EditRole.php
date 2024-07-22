@@ -19,24 +19,8 @@ class EditRole extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()->before(
-                function() {
-                    $this->guard()->permission(Permission::DELETE_ROLE);
-                }
-            ),
+            Actions\DeleteAction::make(),
         ];
-    }
-
-    // Define the instance of the Guard class
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {   
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::EDIT_ROLE);
     }
 
     // Mutate the form data before filling the form

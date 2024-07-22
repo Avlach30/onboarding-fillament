@@ -18,16 +18,4 @@ class ListRoles extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
-    // Define the instance of the Guard class
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mount(): void
-    {   
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::READ_ROLE);
-    }
 }
