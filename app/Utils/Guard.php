@@ -41,4 +41,11 @@ class Guard {
             abort(403, 'Creator ID does not match the logged in user ID');
         }
     }
+
+    public function isCreator(int $creatorId): bool {
+        // Get the logged in user's ID
+        $loggedUserId = auth()->user()->id;
+
+        return $loggedUserId === $creatorId;
+    }
 }
