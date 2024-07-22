@@ -35,8 +35,6 @@ class CreatePost extends CreateRecord
     {
         $loggedUserId = auth()->user()->id;
 
-        // Split the tags string into an array if it exists, otherwise return a null value
-        $data['tags'] = $data['tags'] ? explode(',', $data['tags']) : null;
         $data['creator_id'] = $loggedUserId;
 
         return $data;

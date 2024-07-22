@@ -44,7 +44,8 @@ class PostResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options(Status::class)
                     ->required(),
-                Forms\Components\TextInput::make('tags'),
+                Forms\Components\TagsInput::make('tags')
+                    ->placeholder('Add a tag')
             ]);
     }
 
