@@ -16,18 +16,6 @@ class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
-    // Define the instance of the Guard class
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mount(): void
-    {
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::ADD_NEW_USER);
-    }
-
     protected function mutateFormDataBeforeCreate(array $data): array
     {   
         // Add the role_id to the data array

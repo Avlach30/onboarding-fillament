@@ -108,14 +108,7 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->before(
-                        function () {
-                            // Only allow users with the DELETE_USER permission to delete users
-                            $guard = new Guard();
-
-                            $guard->permission(Permission::DELETE_USER);
-                        }
-                    ),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

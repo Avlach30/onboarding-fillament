@@ -15,18 +15,6 @@ class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
 
-    // Define the instance of the Guard class
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {   
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::EDIT_USER);
-    }
-
     protected function mutateFormDataBeforeFill(array $data): array
     {
         return array_merge($data, [
