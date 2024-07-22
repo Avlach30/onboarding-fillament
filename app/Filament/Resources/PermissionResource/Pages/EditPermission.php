@@ -12,27 +12,11 @@ class EditPermission extends EditRecord
 {
     protected static string $resource = PermissionResource::class;
 
-    protected function guard()
-    {
-        return new Guard();
-    }
-
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()->before(
-                function () {
-                    // Only allow users with the DELETE_PERMISSION permission to delete permissions
-                    $this->guard()->permission(Permission::DELETE_PERMISSION);
-                }
-            ),
+            Actions\DeleteAction::make()
         ];
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::EDIT_PERMISSION);
     }
 
     protected function getRedirectUrl(): ?string

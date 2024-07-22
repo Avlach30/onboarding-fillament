@@ -12,17 +12,6 @@ class CreatePermission extends CreateRecord
 {
     protected static string $resource = PermissionResource::class;
 
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {
-        // Check the permission before mounting
-        $this->guard()->permission(Permission::ADD_NEW_PERMISSION);
-    }
-
     protected function getRedirectUrl(): string
     {
         return PermissionResource::getUrl('index');

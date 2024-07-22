@@ -12,16 +12,6 @@ class ListPermissions extends ListRecords
 {
     protected static string $resource = PermissionResource::class;
 
-    protected function guard()
-    {
-        return new Guard();
-    }
-
-    public function mountCanAuthorizeAccess(): void
-    {
-        $this->guard()->permission(Permission::READ_PERMISSION);
-    }
-
     protected function getHeaderActions(): array
     {
         return [
