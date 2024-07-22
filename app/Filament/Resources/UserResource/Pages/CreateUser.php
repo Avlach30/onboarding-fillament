@@ -4,9 +4,13 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Enums\Permission;
 use App\Filament\Resources\UserResource;
+use App\Models\User;
 use App\Utils\Guard;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
 
 class CreateUser extends CreateRecord
 {
@@ -30,6 +34,24 @@ class CreateUser extends CreateRecord
         return array_merge($data, [
             'role_id' => $data['role'],
         ]);
+    }
+
+    protected function handleRecordCreation(array $data): Model | User
+    {
+        // Create the user
+        $user = User::create($data);
+        // Get the role and related permissions
+        $role = Role::findById($data['role_id']);
+        $permissions = $role->permissions->pluck('name')->toArray();
+
+        // Assign the role to the user
+        $user->assignRole($role->name);
+
+        // Assign the permissions to the user
+        $user->givePermissionTo($permissions);
+
+        // Return the created user
+        return $user;
     }
 
     protected function getRedirectUrl(): string
