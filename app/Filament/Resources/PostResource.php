@@ -9,6 +9,7 @@ use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use App\Utils\Guard;
 use Filament\Forms;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
@@ -35,9 +36,18 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
+                // Custom field to set the maximum length of the title
+                ViewField::make('maxTitleLength')
+                    ->view('forms.components.range-slider', [
+                        'min' => 1,
+                        'max' => 64,
+                        'step' => 1,
+                    ])
+                    ->visibleOn('create'), // Only show this field on the create form
                 Forms\Components\TextInput::make('title')
                     ->required()
-                    ->maxLength(255),
+                    // Get the value of the maxTitleLength field, or default to 64
+                    ->maxLength(fn ($get) => $get('maxTitleLength') ?? 64),
                 Forms\Components\Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
